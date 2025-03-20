@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600');
+
+:root {
+  --sans-font: "Open Sans", Arial, Helvetica, "Helvetica Neue", sans-serif;
+  --bg: #FFF;
+  --text: #5F5F5F;
+  --text-accent: #000;
+  --link: #07b4ff;
+  --particles: rgba(50, 50, 50, 0.11);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #212121;
+    --text: #DCDCDC;
+    --text-accent: #FEFEFE;
+    --link: #FB3;
+    --particles: rgba(255, 255, 255, 0.07);
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  background: var(--bg);
+  font-family: var(--sans-font);
+  font-size: 1.7rem;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+.container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main {
+  max-width: 270px;
+  padding: 0 25px;
+  margin-top: -7%;
+}
+
+@media (min-width: 550px) {
+  .main {
+    max-width: 550px;
+    padding: 0;
+  }
+}
+
+h1 {
+  font-size: 3.0rem;
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: 25px;
+  color: var(--text-accent);
+}
+
+p {
+  margin-bottom: 17px;
+}
+
+a,
+a:hover,
+a:active,
+a:visited {
+  color: var(--link);
+  text-decoration: none;
+}
+
+.loader {
+  width: 22px;
+  height: 22px;
+  border: 3px solid #FFFFFF80;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  margin-right: 10px;
+}
+
+.u-hide {
+  opacity: 0;
+  visibility: hidden;
+}

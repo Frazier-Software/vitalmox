@@ -1,0 +1,21 @@
+PRIVACY POLICY
+
+Vital Mox
+Frazier Software
+
+At Frazier Software, we’re proud to say we collect absolutely nothing from you.
+No sneaky data grabs, no creepy tracking, and definitely no “sharing with third
+parties” (because, frankly, we have nothing to share).
+
+This app doesn’t log you in, doesn’t care who you are, and doesn’t even rely on
+the internet. It’s basically a digital hermit. We don’t do ad targeting, data
+mining, or anything that would make a GDPR compliance officer wake up in a cold
+sweat. Your privacy isn’t just safe with us—it’s practically overkill.
+
+That said, we may collect some basic analytics on how the app behaves on your
+device (think: “Did it crash? Did it work? Cool.”). If you’re one of those
+“opt-out-of-everything” warriors, feel free to fiddle with your device settings,
+cookies, host file, carrier pigeons, whatever floats your boat. We won’t stop you.
+
+In short: We’ve got no data, no drama, and no desire to deal with the EU’s 47-page
+rulebook. Enjoy the app!
