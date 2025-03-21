@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:vitalmox/src/common.dart';
 
 class LifeTotalText extends StatelessWidget {
-  const LifeTotalText({
+  const LifeTotalText(
+    int health, {
     super.key,
-    int? health,
-  }) : _health = health ?? 20;
+  }) : _health = health;
 
   final int _health;
 
@@ -13,7 +13,7 @@ class LifeTotalText extends StatelessWidget {
   Widget build(BuildContext context) {
     return FittedBox(
       child: Padding(
-        padding: horizontalPadding20,
+        padding: allPadding20,
         child: Text.rich(
           textAlign: TextAlign.center,
           TextSpan(
