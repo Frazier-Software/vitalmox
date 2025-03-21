@@ -3,7 +3,7 @@ import 'package:vitalmox/src/app.dart';
 import 'package:vitalmox/src/config.dart';
 
 void main() {
-  runApp(MyApp(
+  runApp(VitalMox(
     config: AppConfig(env: AppEnv.dev),
   ));
 }
