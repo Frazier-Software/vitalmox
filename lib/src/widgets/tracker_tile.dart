@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vitalmox/src/common.dart';
-import 'package:vitalmox/src/models/lifetracker_model.dart';
-import 'package:vitalmox/src/widgets/lifetotal_text.dart';
+import 'package:vitalmox/src/models/player_model.dart';
+import 'package:vitalmox/src/widgets/tracker_text.dart';
 
-class LifeTrackerTile extends StatelessWidget {
-  const LifeTrackerTile({
+class TrackerTile extends StatelessWidget {
+  const TrackerTile({
     super.key,
     required int playerId,
-    required Color color,
     bool? flip,
   })  : _playerId = playerId,
-        _color = color,
         _flip = flip ?? false;
 
   final int _playerId;
-  final Color _color;
   final bool _flip;
 
   @override
@@ -23,18 +20,18 @@ class LifeTrackerTile extends StatelessWidget {
     return Expanded(
       child: RotatedBox(
         quarterTurns: _flip ? 2 : 0,
-        child: Material(
-          color: _color,
-          borderRadius: borderRadius16,
-          child: Consumer<LifeTrackerModel>(
-            builder: (context, model, child) => Stack(
+        child: Consumer<PlayerModel>(
+          builder: (context, model, child) => Material(
+            color: model.getColor(_playerId),
+            borderRadius: borderRadius16,
+            child: Stack(
               fit: StackFit.passthrough,
               children: [
                 Row(
                   children: [
                     Expanded(
                       child: InkWell(
-                        onTap: () => model.decrement(_playerId),
+                        onTap: () => model.decrementCounter(_playerId),
                         splashColor: Colors.black12,
                         customBorder: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
@@ -46,7 +43,7 @@ class LifeTrackerTile extends StatelessWidget {
                     ),
                     Expanded(
                       child: InkWell(
-                        onTap: () => model.increment(_playerId),
+                        onTap: () => model.incrementCounter(_playerId),
                         splashColor: Colors.black12,
                         customBorder: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
@@ -58,11 +55,7 @@ class LifeTrackerTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                IgnorePointer(
-                  child: LifeTotalText(
-                    model.healthFor(_playerId),
-                  ),
-                ),
+                TrackerText(playerId: _playerId),
               ],
             ),
           ),

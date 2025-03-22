@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vitalmox/src/common.dart';
-import 'package:vitalmox/src/models/lifetracker_model.dart';
+import 'package:vitalmox/src/models/player_model.dart';
 
 class ResetButton extends StatefulWidget {
   const ResetButton({
@@ -24,7 +24,7 @@ class _ResetButtonState extends State<ResetButton> {
       child: IconButton(
         onPressed: () {
           setState(() => _turns += 1);
-          context.read<LifeTrackerModel>().reset();
+          context.read<PlayerModel>().reset();
         },
         icon: const Icon(Icons.refresh),
         iconSize: 38,
