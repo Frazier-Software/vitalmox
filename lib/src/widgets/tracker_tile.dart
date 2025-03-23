@@ -21,7 +21,7 @@ class TrackerTile extends StatefulWidget {
 class _TrackerTileState extends State<TrackerTile> {
   var _activeCounterIndex = 0;
 
-  void _switchCounterCallback() {
+  void switchCounterCallback() {
     setState(() {
       _activeCounterIndex = _activeCounterIndex == 0 ? 1 : 0;
     });
@@ -74,7 +74,7 @@ class _TrackerTileState extends State<TrackerTile> {
                 ),
                 TrackerText(
                   counter: activeCounter,
-                  switchCounter: _switchCounterCallback,
+                  switchCounter: switchCounterCallback,
                 ),
               ],
             ),
