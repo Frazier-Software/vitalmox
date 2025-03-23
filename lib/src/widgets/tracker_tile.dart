@@ -1,28 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:vitalmox/src/common.dart';
-import 'package:vitalmox/src/models/player_model.dart';
+import 'package:vitalmox/src/domain/player.dart';
 import 'package:vitalmox/src/widgets/tracker_text.dart';
 
-class TrackerTile extends StatelessWidget {
+class TrackerTile extends StatefulWidget {
   const TrackerTile({
     super.key,
-    required int playerId,
     bool? flip,
-  })  : _playerId = playerId,
-        _flip = flip ?? false;
+    required Player player,
+  })  : _flip = flip ?? false,
+        _player = player;
 
-  final int _playerId;
   final bool _flip;
+  final Player _player;
+
+  @override
+  State<TrackerTile> createState() => _TrackerTileState();
+}
+
+class _TrackerTileState extends State<TrackerTile> {
+  var _activeCounterIndex = 0;
+
+  void _switchCounterCallback() {
+    setState(() {
+      _activeCounterIndex = _activeCounterIndex == 0 ? 1 : 0;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    var activeCounter = widget._player.counters[_activeCounterIndex];
+
     return Expanded(
-      child: RotatedBox(
-        quarterTurns: _flip ? 2 : 0,
-        child: Consumer<PlayerModel>(
-          builder: (context, model, child) => Material(
-            color: model.getColor(_playerId),
+      child: ListenableBuilder(
+        listenable: widget._player,
+        builder: (context, child) => RotatedBox(
+          quarterTurns: widget._flip ? 2 : 0,
+          child: Material(
+            color: widget._player.color,
             borderRadius: borderRadius16,
             child: Stack(
               fit: StackFit.passthrough,
@@ -31,7 +46,7 @@ class TrackerTile extends StatelessWidget {
                   children: [
                     Expanded(
                       child: InkWell(
-                        onTap: () => model.decrementCounter(_playerId),
+                        onTap: activeCounter.decrement,
                         splashColor: Colors.black12,
                         customBorder: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
@@ -43,7 +58,7 @@ class TrackerTile extends StatelessWidget {
                     ),
                     Expanded(
                       child: InkWell(
-                        onTap: () => model.incrementCounter(_playerId),
+                        onTap: activeCounter.increment,
                         splashColor: Colors.black12,
                         customBorder: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
@@ -55,7 +70,10 @@ class TrackerTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                TrackerText(playerId: _playerId),
+                TrackerText(
+                  counter: activeCounter,
+                  switchCounter: _switchCounterCallback,
+                ),
               ],
             ),
           ),

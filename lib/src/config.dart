@@ -5,8 +5,10 @@ enum AppEnv {
 }
 
 /// Application Configuration
-class AppConfig {
-  AppConfig({required this.env});
+final class AppConfig {
+  AppConfig({
+    required this.env,
+  });
 
   final AppEnv env;
 

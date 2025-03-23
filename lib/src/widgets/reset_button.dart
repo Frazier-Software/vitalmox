@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:vitalmox/src/common.dart';
-import 'package:vitalmox/src/models/player_model.dart';
+import 'package:vitalmox/src/domain/player.dart';
 
 class ResetButton extends StatefulWidget {
   const ResetButton({
     super.key,
-  });
+    required List<Player> players,
+  }) : _players = players;
+
+  final List<Player> _players;
 
   @override
   State<ResetButton> createState() => _ResetButtonState();
@@ -24,7 +26,12 @@ class _ResetButtonState extends State<ResetButton> {
       child: IconButton(
         onPressed: () {
           setState(() => _turns += 1);
-          context.read<PlayerModel>().reset();
+          var colors = List.from(Colors.primaries);
+          colors.shuffle();
+          widget._players.asMap().forEach((index, player) {
+            player.resetCounters();
+            player.color = colors[index];
+          });
         },
         icon: const Icon(Icons.refresh),
         iconSize: 38,
