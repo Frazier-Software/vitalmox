@@ -1,39 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:vitalmox/src/app.dart';
 import 'package:vitalmox/src/common.dart';
+import 'package:vitalmox/src/layout.dart';
 
-class SettingsOverlay extends StatefulWidget {
+class SettingsOverlay extends StatelessWidget {
   const SettingsOverlay({
     super.key,
+    required LayoutSettings layout,
     required Widget child,
-  }) : _child = child;
+  })  : _layout = layout,
+        _child = child;
 
+  final LayoutSettings _layout;
   final Widget _child;
-
-  @override
-  State<SettingsOverlay> createState() => _SettingsOverlayState();
-}
-
-class _SettingsOverlayState extends State<SettingsOverlay> {
-  late final VitalMoxState app;
-
-  @override
-  void initState() {
-    super.initState();
-    app = context.findAncestorStateOfType<VitalMoxState>()!;
-  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        widget._child,
+        _child,
         Positioned(
           top: 8,
           right: 12,
           child: SafeArea(
             child: GestureDetector(
-              onTap: _showOverlay,
+              onTap: () => _showOverlay(context),
               child: Container(
                 padding: allPadding8,
                 decoration: BoxDecoration(
@@ -53,7 +43,7 @@ class _SettingsOverlayState extends State<SettingsOverlay> {
     );
   }
 
-  void _showOverlay() {
+  void _showOverlay(BuildContext context) {
     const whiteText = TextStyle(fontSize: 18, color: Colors.white);
     const boldText = TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold);
 
@@ -77,12 +67,12 @@ class _SettingsOverlayState extends State<SettingsOverlay> {
                   children: List.generate(4, (index) {
                     final number = index + 2; // Creates buttons 2-5
                     return ElevatedButton(
-                      onPressed: () => app.setNumPlayers(number),
+                      onPressed: () => _layout.numOfPlayers = number,
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
                         padding: allPadding16,
                         backgroundColor:
-                            app.numPlayers == number ? Colors.blue[700] : Colors.grey[800],
+                            _layout.numOfPlayers == number ? Colors.blue[700] : Colors.grey[800],
                       ),
                       child: Text(
                         '$number',
@@ -101,11 +91,11 @@ class _SettingsOverlayState extends State<SettingsOverlay> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
-                      onPressed: () => app.setFlipTopRow(true),
+                      onPressed: () => _layout.flipTopRow = true,
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
                         padding: allPadding16,
-                        backgroundColor: app.flipTopRow ? Colors.blue[700] : Colors.grey[800],
+                        backgroundColor: _layout.flipTopRow ? Colors.blue[700] : Colors.grey[800],
                       ),
                       child: const Text(
                         'Yes',
@@ -114,11 +104,11 @@ class _SettingsOverlayState extends State<SettingsOverlay> {
                     ),
                     horizontalMargin28,
                     ElevatedButton(
-                      onPressed: () => app.setFlipTopRow(false),
+                      onPressed: () => _layout.flipTopRow = false,
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
                         padding: allPadding16,
-                        backgroundColor: !app.flipTopRow ? Colors.blue[700] : Colors.grey[800],
+                        backgroundColor: !_layout.flipTopRow ? Colors.blue[700] : Colors.grey[800],
                       ),
                       child: const Text(
                         'No',

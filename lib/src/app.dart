@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:vitalmox/src/common.dart';
 import 'package:vitalmox/src/config.dart';
 import 'package:vitalmox/src/domain/player.dart';
+import 'package:vitalmox/src/layout.dart';
 import 'package:vitalmox/src/widgets/reset_button.dart';
 import 'package:vitalmox/src/widgets/settings_overlay.dart';
 import 'package:vitalmox/src/widgets/tracker_tile.dart';
@@ -16,17 +17,34 @@ class VitalMox extends StatefulWidget {
   final AppConfig config;
 
   @override
-  State<VitalMox> createState() => VitalMoxState();
+  State<VitalMox> createState() => _VitalMoxState();
 }
 
-class VitalMoxState extends State<VitalMox> {
+class _VitalMoxState extends State<VitalMox> {
+  final _layout = LayoutSettings();
+
   late Map<Key, Player> _players;
-  var _flipTopRow = true;
+  late final VoidCallback _layoutListener;
 
   @override
   void initState() {
     super.initState();
-    _generatePlayers(2);
+    _generatePlayers(_layout.numOfPlayers);
+
+    _layoutListener = () {
+      setState(() {
+        if (_layout.numOfPlayers != _players.length) {
+          _generatePlayers(_layout.numOfPlayers);
+        }
+      });
+    };
+    _layout.addListener(_layoutListener);
+  }
+
+  @override
+  void dispose() {
+    _layout.removeListener(_layoutListener);
+    super.dispose();
   }
 
   void _generatePlayers(int numPlayers) {
@@ -39,18 +57,6 @@ class VitalMoxState extends State<VitalMox> {
     );
   }
 
-  int get numPlayers => _players.length;
-
-  void setNumPlayers(int numPlayers) {
-    setState(() => _generatePlayers(numPlayers));
-  }
-
-  bool get flipTopRow => _flipTopRow;
-
-  void setFlipTopRow(bool flip) {
-    setState(() => _flipTopRow = flip);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Provider.value(
@@ -60,6 +66,7 @@ class VitalMoxState extends State<VitalMox> {
         theme: ThemeData(canvasColor: Colors.black),
         home: Material(
           child: SettingsOverlay(
+            layout: _layout,
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -84,7 +91,7 @@ class VitalMoxState extends State<VitalMox> {
                           children: _buildChildren(
                             orientation,
                             topRowItems,
-                            _flipTopRow && orientation == Orientation.portrait,
+                            _layout.flipTopRow && orientation == Orientation.portrait,
                           ),
                         ),
                       ),

@@ -39,7 +39,7 @@ class TrackerText extends StatelessWidget {
                 Positioned(
                   bottom: 0,
                   child: GestureDetector(
-                    onTap: () => _switchCounter(),
+                    onTap: _switchCounter,
                     child: Text(
                       _counter.symbol,
                       style: TextStyle(
