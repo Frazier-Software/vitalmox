@@ -19,18 +19,20 @@ class VitalMox extends StatefulWidget {
 }
 
 class _VitalMoxState extends State<VitalMox> {
+  final _numPlayers = 3;
   late final Map<Key, Player> _players;
 
   @override
   void initState() {
     super.initState();
 
-    var colors = List.from(Colors.primaries);
-    colors.shuffle();
-    _players = {
-      GlobalKey(): Player(color: colors[0]),
-      GlobalKey(): Player(color: colors[1]),
-    };
+    var colors = List.from(Colors.primaries)..shuffle();
+    _players = Map.fromEntries(
+      List.generate(
+        _numPlayers,
+        (index) => MapEntry(GlobalKey(), Player(color: colors[index])),
+      ),
+    );
   }
 
   @override
@@ -38,53 +40,84 @@ class _VitalMoxState extends State<VitalMox> {
     return Provider.value(
       value: widget.config,
       child: MaterialApp(
-        title: 'Vital Mox',
+        title: 'Vital Mox | MTG Life Counter',
         theme: ThemeData(canvasColor: Colors.black),
         home: Material(
           child: Stack(
             alignment: Alignment.center,
             children: [
-              OrientationBuilder(
-                builder: (context, orientation) {
-                  if (orientation == Orientation.portrait) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        TrackerTile(
-                          key: _players.keys.elementAt(0),
-                          player: _players.values.elementAt(0),
-                          flip: true,
-                        ),
-                        verticalMargin12,
-                        TrackerTile(
-                          key: _players.keys.elementAt(1),
-                          player: _players.values.elementAt(1),
-                        ),
-                      ],
-                    );
-                  } else {
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        TrackerTile(
-                          key: _players.keys.elementAt(0),
-                          player: _players.values.elementAt(0),
-                        ),
-                        horizontalMargin12,
-                        TrackerTile(
-                          key: _players.keys.elementAt(1),
-                          player: _players.values.elementAt(1),
-                        ),
-                      ],
-                    );
-                  }
-                },
-              ),
+              OrientationBuilder(builder: (context, orientation) {
+                final outerWidget = orientation == Orientation.portrait ? Column.new : Row.new;
+                final innerWidget = orientation == Orientation.portrait ? Row.new : Column.new;
+                final spacing =
+                    orientation == Orientation.portrait ? verticalMargin12 : horizontalMargin12;
+
+                // maintain spacial layout by ordering entries with respect to orientation
+                final entries = _getOrderedPlayerEntries(orientation);
+                final topRowCount = _players.length ~/ 2;
+                final topRowItems = entries.sublist(0, topRowCount);
+                final bottomRowItems = entries.sublist(topRowCount);
+
+                return outerWidget(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: innerWidget(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: _buildChildren(orientation, topRowItems),
+                      ),
+                    ),
+                    spacing,
+                    Expanded(
+                      child: innerWidget(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: _buildChildren(orientation, bottomRowItems),
+                      ),
+                    ),
+                  ],
+                );
+              }),
               ResetButton(players: _players.values.toList()),
             ],
           ),
         ),
       ),
     );
+  }
+
+  List<MapEntry<Key, Player>> _getOrderedPlayerEntries(Orientation orientation) {
+    final entries = _players.entries.toList();
+    if (orientation == Orientation.portrait) {
+      // Row-major order: left-to-right, top-to-bottom
+      return entries;
+    }
+
+    // Column-major order: top-to-bottom, left-to-right
+    final colCount = (_players.length / 2).ceil();
+    final reordered = <MapEntry<Key, Player>>[];
+
+    for (int row = 0; row < 2; row++) {
+      for (int col = 0; col < colCount; col++) {
+        int index = row + col * 2;
+        if (index < _players.length) {
+          reordered.add(entries[index]);
+        }
+      }
+    }
+    return reordered;
+  }
+
+  List<Widget> _buildChildren(Orientation orientation, List<MapEntry<Key, Player>> rowItems) {
+    final children = <Widget>[];
+    for (int i = 0; i < rowItems.length; i++) {
+      children.add(TrackerTile(
+        key: rowItems[i].key,
+        player: rowItems[i].value,
+      ));
+      if (i < rowItems.length - 1) {
+        children.add(orientation == Orientation.portrait ? horizontalMargin12 : verticalMargin12);
+      }
+    }
+    return children;
   }
 }

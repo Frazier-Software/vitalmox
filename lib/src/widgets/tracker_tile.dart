@@ -42,33 +42,35 @@ class _TrackerTileState extends State<TrackerTile> {
             child: Stack(
               fit: StackFit.passthrough,
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: activeCounter.decrement,
-                        splashColor: Colors.black12,
-                        customBorder: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(16),
-                            bottomLeft: Radius.circular(16),
+                Positioned.fill(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: activeCounter.increment,
+                          splashColor: Colors.black12,
+                          customBorder: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: activeCounter.increment,
-                        splashColor: Colors.black12,
-                        customBorder: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(16),
-                            bottomRight: Radius.circular(16),
+                      Expanded(
+                        child: InkWell(
+                          onTap: activeCounter.decrement,
+                          splashColor: Colors.black12,
+                          customBorder: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(16),
+                              bottomRight: Radius.circular(16),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 TrackerText(
                   counter: activeCounter,
