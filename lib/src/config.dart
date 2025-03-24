@@ -1,5 +1,6 @@
 /// Application Environment
 enum AppEnv {
+  test,
   dev,
   production,
 }
