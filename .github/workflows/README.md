@@ -1,0 +1,7 @@
+### Required Variables
+
+- ...
+
+### Required Secrets
+
+- ...

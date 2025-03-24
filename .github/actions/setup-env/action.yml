@@ -1,0 +1,14 @@
+name: Setup Environment
+runs:
+  using: composite
+
+  steps:
+  - name: Set up Flutter
+    uses: subosito/flutter-action@v2
+    with:
+      channel: stable
+      flutter-version: 3.24.3
+
+  - name: Prepare dependencies
+    shell: bash
+    run: flutter pub get

@@ -1,0 +1,10 @@
+name: Pull Request Pipeline
+on:
+  pull_request:
+
+jobs:
+  quality-control:
+    name: Quality Control
+    uses: ./.github/workflows/quality-control.yml
+    with:
+      branch: ${{ github.ref }}

@@ -1,0 +1,41 @@
+name: Download Artifact
+inputs:
+  artifact:
+    required: true
+    type: string
+  path:
+    required: true
+    type: string
+runs:
+  using: composite
+
+  steps:
+  - name: Download build artifact
+    uses: actions/github-script@v6
+    env:
+      GITHUB_ARTIFACT: ${{ inputs.artifact }}
+    with:
+      # NOTE: github is an octokit instance, see: https://octokit.github.io/rest.js/v18/
+      script: |
+        const allArtifacts = await github.rest.actions.listArtifactsForRepo({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+        });
+        const matchArtifact = allArtifacts.data.artifacts.find(
+          artifact => artifact.name == process.env.GITHUB_ARTIFACT
+        );
+        const download = await github.rest.actions.downloadArtifact({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          artifact_id: matchArtifact.id,
+          archive_format: 'zip',
+        });
+        const fs = require('fs');
+        fs.writeFileSync(
+          `${process.env.GITHUB_WORKSPACE}/${process.env.GITHUB_ARTIFACT}.zip`,
+          Buffer.from(download.data)
+        );
+
+  - name: Unzip build artifact
+    shell: bash
+    run: unzip -d "${{ inputs.path }}" "${{ inputs.artifact }}.zip"

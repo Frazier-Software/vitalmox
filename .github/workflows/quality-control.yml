@@ -1,0 +1,39 @@
+name: Quality Control
+on:
+  workflow_call:
+    inputs:
+      branch:
+        required: true
+        type: string
+        default: main
+
+  workflow_dispatch:
+    inputs:
+      branch:
+        required: true
+        type: string
+        default: main
+
+jobs:
+  quality-control:
+    name: Quality Control
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ inputs.branch }}
+        submodules: recursive
+
+    - name: Setup Flutter
+      uses: ./.github/actions/setup-env
+
+    - name: Flutter analyze
+      run: flutter analyze .
+
+    - name: Check formatting
+      run: dart format -o none --line-length 100 --set-exit-if-changed .
+
+    - name: Run widget/unit tests
+      run: flutter test --no-pub
