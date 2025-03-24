@@ -1,4 +1,4 @@
-package com.example.vitalmox
+package software.frazier.vitalmox
 
 import io.flutter.embedding.android.FlutterActivity
 
