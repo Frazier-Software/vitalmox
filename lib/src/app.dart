@@ -7,6 +7,7 @@ import 'package:vitalmox/src/layout.dart';
 import 'package:vitalmox/src/widgets/reset_button.dart';
 import 'package:vitalmox/src/widgets/settings_overlay.dart';
 import 'package:vitalmox/src/widgets/tracker_tile.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class VitalMox extends StatefulWidget {
   const VitalMox({
@@ -29,6 +30,8 @@ class _VitalMoxState extends State<VitalMox> {
   @override
   void initState() {
     super.initState();
+    WakelockPlus.enable();
+
     _generatePlayers(_layout.numOfPlayers);
 
     _layoutListener = () {
@@ -43,6 +46,7 @@ class _VitalMoxState extends State<VitalMox> {
 
   @override
   void dispose() {
+    WakelockPlus.disable();
     _layout.removeListener(_layoutListener);
     super.dispose();
   }

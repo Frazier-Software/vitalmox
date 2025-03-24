@@ -43,6 +43,7 @@ class TrackerText extends StatelessWidget {
                     child: Text(
                       _counter.symbol,
                       style: TextStyle(
+                        color: Colors.black,
                         fontSize: isSingleDigit ? 5 : 10,
                         fontWeight: FontWeight.w500,
                       ),
