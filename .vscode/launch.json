@@ -1,0 +1,54 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "vitalmox (dev-debug)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "program": "lib/main_dev.dart",
+      "toolArgs": [ "--flavor=dev" ]
+    },
+    {
+      "name": "vitalmox (dev-profile)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main_dev.dart",
+      "toolArgs": [ "--flavor=dev" ]
+    },
+    {
+      "name": "vitalmox (dev-release)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main_dev.dart",
+      "toolArgs": [ "--flavor=dev" ]
+    },
+
+    {
+      "name": "vitalmox (production-debug)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "program": "lib/main_production.dart",
+      "toolArgs": [ "--flavor=production" ]
+    },
+    {
+      "name": "vitalmox (production-profile)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main_production.dart",
+      "toolArgs": [ "--flavor=production" ]
+    },
+    {
+      "name": "vitalmox (production-release)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main_production.dart",
+      "toolArgs": [ "--flavor=production" ]
+    }
+  ]
+}
