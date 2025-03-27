@@ -170,3 +170,6 @@ jspm_packages/
 .buildlog/
 .svn/
 migrate_working_dir/
+
+# Manual Archives
+/private/archives/
